@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Open app</title>
+
+  <script type="text/javascript">
+    // tries to execute the uri:scheme
+    var start, end, elapsed;
+
+    // start a timer
+    start = new Date().getTime();
+
+    // attempt to redirect to the uri:scheme
+    // the lovely thing about javascript is that it's single threadded.
+    // if this WORKS, it'll stutter for a split second, causing the timer to be off
+    document.location = '<INTENT>';
+
+    setTimeout(function() {
+      // end timer
+      end = new Date().getTime();
+
+      elapsed = (end - start);
+
+      // if there's no elapsed time, then the scheme didn't fire, and we head to the url.
+      if (elapsed < 1) {
+        document.location = '<FALLBACK>';
+      }
+      // Else we could show a success page?
+    }, 0);
+  </script>
+</head>
+<body>
+<BODY>
+</body>
+</html>

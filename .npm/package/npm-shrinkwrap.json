@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "connect-ratelimit": {
+      "version": "0.0.7"
+    }
+  }
+}
