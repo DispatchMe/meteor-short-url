@@ -1,6 +1,6 @@
 Package.describe({
   name: 'dispatch:short-url',
-  version: '0.0.1',
+  version: '1.0.0-rc.1',
   summary: 'Handle short urls'
 });
 

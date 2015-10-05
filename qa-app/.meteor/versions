@@ -19,7 +19,7 @@ ddp-server@1.2.1
 deps@1.0.9
 diff-sequence@1.0.1
 dispatch:deep-link@4.0.1
-dispatch:short-url@0.0.1
+dispatch:short-url@1.0.0-rc.1
 ecmascript@0.1.5
 ecmascript-collections@0.1.6
 ejson@1.0.7
