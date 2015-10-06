@@ -1,7 +1,7 @@
 Package.describe({
   name: 'dispatch:short-url',
-  version: '1.0.0-rc.1',
-  summary: 'Handle short urls'
+  version: '1.0.0',
+  summary: 'Handle short urls, android and ios support'
 });
 
 Npm.depends({
@@ -14,7 +14,8 @@ Package.onUse(function(api) {
     'ecmascript',
     'underscore',
     'random',
-    'check'
+    'check',
+    'raix:eventemitter@0.1.3'
   ], 'server');
 
   api.addAssets([

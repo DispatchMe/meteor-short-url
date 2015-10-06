@@ -14,8 +14,11 @@ Create short urls, supports android and ios intents / custom-url shemes.
     //   totalRequests: 10,
     //   every: 60000
     // },
+    // collectionName: '', // Overwrite the default collection for short urls
     fallbackUrl: 'https://go.to.here.if.the.redirect.fails',
-    // debug: true // Make it verbose
+    // debug: true // Make it verbose,
+    // payload: { foo: bar } // Abillity to add payload for events
+    startServer: true // Start the http(s) restpoint, default is false
   });
 
   // Create a short url
@@ -33,8 +36,12 @@ Create short urls, supports android and ios intents / custom-url shemes.
 
   // Limit usage
   shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
-    expireAt=10000 + new Date(), // Set expiration time/date
-    oneTimeLink=false            // Set true and this link will only work once
+    oneTimeLink=true // Set true and this link will only work once
+  });
+
+  // or... have it expire
+  shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
+    expireAt=new Date(new Date().getTime() + 10000) // Set expiration time/date
   });
 ```
 
@@ -69,3 +76,9 @@ Create short urls, supports android and ios intents / custom-url shemes.
       iosUrl: deepLink.iosLink('', payload)
   });
 ```
+
+#### Events emitted
+The `urlShortner` will emit the following event:
+* `this.emit('redirect', event);` *(redirect or by html template)*
+* `this.emit('expired', event);` *(By date or usage)*
+* `this.emit('error', event);`

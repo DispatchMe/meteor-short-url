@@ -20,11 +20,17 @@ if (Meteor.isServer) {
   shortUrl = new UrlShortner({
     prefix: '/s',
     debug: true,
-    htmlBody: 'Redirecting...'
+    htmlBody: 'Redirecting...',
+    startServer: true
   });
 
   deepLink = new DeepLink('dispatchdeeplinktest', {
     fallbackUrl: 'http://www.google.com',
     appId: 'me.dispatch.qa.test.deep.link'
   });
+
+
+  shortUrl.on('error', (evt) => { console.log('Error:', evt); });
+  shortUrl.on('redirect', (evt) => { console.log('Redirect:', evt); });
+  shortUrl.on('expired', (evt) => { console.log('Expired:', evt); });
 }
