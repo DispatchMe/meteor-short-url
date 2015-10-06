@@ -15,6 +15,8 @@ Package.onUse(function(api) {
     'underscore',
     'random',
     'check',
+    'mongo',
+    'webapp',
     'raix:eventemitter@0.1.3'
   ], 'server');
 
@@ -27,14 +29,22 @@ Package.onUse(function(api) {
   ], 'server');
 
   api.export('UrlShortner', 'server');
+
+  api.export('shortUrlPattern', { testOnly: true });
+  api.export('isHttp', { testOnly: true });
+  api.export('isAndroidIntentWithCallback', { testOnly: true });
 });
 
-// Package.onTest(function(api) {
-//   api.use(['ecmascript'], 'web');
+Package.onTest(function(api) {
+  api.use([
+    'sanjo:jasmine@0.20.2',
+    'ecmascript',
+    'dispatch:short-url',
+    'http',
+    'webapp'
+  ], 'server');
 
-//   api.use(['dispatch:short-url']);
-//   api.use('test-helpers', 'client');
-//   api.use('tinytest', 'client');
-
-//   api.addFiles('tests/utils.js', 'client');
-// });
+  api.addFiles([
+    'tests/server.js'
+  ], 'server');
+});
