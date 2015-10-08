@@ -1,4 +1,4 @@
-dispatch:short-url
+dispatch:short-url [![Build Status](https://travis-ci.org/DispatchMe/meteor-short-url.svg)](https://travis-ci.org/DispatchMe/meteor-short-url)
 ==================
 
 Create short urls, supports android and ios intents / custom-url shemes.
