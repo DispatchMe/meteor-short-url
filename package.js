@@ -1,6 +1,6 @@
 Package.describe({
   name: 'dispatch:short-url',
-  version: '1.0.1',
+  version: '1.0.2',
   summary: 'Handle short urls, android and ios support'
 });
 
@@ -28,11 +28,17 @@ Package.onUse(function(api) {
     'lib/server.js'
   ], 'server');
 
-  api.export('UrlShortner', 'server');
+  api.export('UrlShortener', 'server');
 
-  api.export('shortUrlPattern', { testOnly: true });
-  api.export('isHttp', { testOnly: true });
-  api.export('isAndroidIntentWithCallback', { testOnly: true });
+  api.export('shortUrlPattern', {
+    testOnly: true
+  });
+  api.export('isHttp', {
+    testOnly: true
+  });
+  api.export('isAndroidIntentWithCallback', {
+    testOnly: true
+  });
 });
 
 Package.onTest(function(api) {
@@ -45,6 +51,7 @@ Package.onTest(function(api) {
   ], 'server');
 
   api.addFiles([
-    'tests/server.js'
+    'tests/server.js',
+    'tests/domain.js'
   ], 'server');
 });
