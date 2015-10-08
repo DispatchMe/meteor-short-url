@@ -15,14 +15,14 @@ Create short urls, supports android and ios intents / custom-url shemes.
     //   every: 60000
     // },
     // collectionName: '', // Overwrite the default collection for short urls
-    fallbackUrl: 'https://go.to.here.if.the.redirect.fails',
+    fallbackUrl: 'https://go.to.here.if.the.short.url.is.not.found',
     // debug: true // Make it verbose,
     // payload: { foo: bar } // Abillity to add payload for events
     startServer: true // Start the http(s) restpoint, default is false
   });
 
   // Create a short url
-  shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me');
+  shortUrl = createShortUrl('https://this.is.a.long.url.please.shorten.me');
 
   // Create a short url for android and iOS
   // Note: Provide the android fallback url in the intent for the best
@@ -58,7 +58,7 @@ Create short urls, supports android and ios intents / custom-url shemes.
   // Setup a url shortner
   shortUrl = new UrlShortner({
     prefix: '/s',
-    fallbackUrl: 'https://go.to.here.if.the.redirect.fails',
+    fallbackUrl: 'https://go.to.here.if.the.redirect.fails', // In case the url is not found
   });
 
   // Create some data to send
@@ -70,10 +70,13 @@ Create short urls, supports android and ios intents / custom-url shemes.
     }
   };
 
+  var tinyPayload = 12; // For internet explorer
+
   // Create the shortUrl
-  shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
-    androidUrl: deepLink.androidLink('', payload),
-      iosUrl: deepLink.iosLink('', payload)
+  shortUrl = createShortUrl(deepLink.browserLink('', payload), {
+    androidUrl: deepLink.androidLink('', payload), // This will fallback to the main url
+    iosUrl: deepLink.iosLink('', payload), // This will fallback to the main url
+    ieUrl: deepLink.browserLink('', tinyPayload)
   });
 ```
 

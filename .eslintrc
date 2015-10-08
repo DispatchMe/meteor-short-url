@@ -1,0 +1,44 @@
+{
+  "root": true,
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  },
+  "globals": {
+
+    // Package exports
+    "UrlShortner": true,
+    "isAndroidIntentWithCallback": true,
+    "isHttp": true,
+    "shortUrlPattern": true,
+
+    // Globals
+    "App": false,
+    "Assets": false,
+    "Cordova": false,
+    "ECMAScript": false,
+    "EventEmitter": false,
+    "HTTP": false,
+    "HTTPInternals": false,
+    "Jasmine": false,
+    "Map": false,
+    "Match": false,
+    "Meteor": false,
+    "Mongo": false,
+    "MongoInternals": false,
+    "Npm": false,
+    "Package": false,
+    "Promise": false,
+    "Random": false,
+    "Set": false,
+    "UrlShortner": false,
+    "WebApp": false,
+    "WebAppInternals": false,
+    "_": false,
+    "babelHelpers": false,
+    "check": false,
+    "main" : false
+  }
+}

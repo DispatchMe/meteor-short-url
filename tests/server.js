@@ -1,15 +1,18 @@
+/* jshint maxlen: 200 */
 // Start a simple short url server
 
 var shortUrl;
 
 var asIOS = 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0_2 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) CriOS/30.0.1599.12 Mobile/11A501 Safari/8536.25';
 var asAndroid = 'Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30';
+var asInternetExplorer10 = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
 
 var successUrl = 'http://meteor.com';
 var fallbackUrl = 'http://google.com';
 var androidFallbackUrl = 'http://play.google.com';
 var iosIntent = 'intent://platform=ios';
 var androidIntent = 'intent://platform=android';
+var ieUrl = 'http://internet.explorer.url';
 
 var androidIntentWithFallback = 'intent://platform=android;S.browser_fallback_url=' + androidFallbackUrl + ';end';
 
@@ -53,6 +56,15 @@ var Test = {
       followRedirects: false,
       headers: {
         'user-agent': asAndroid
+      }
+    });
+  },
+
+  getIE10: function(url) {
+    return HTTP.get(url, {
+      followRedirects: false,
+      headers: {
+        'user-agent': asInternetExplorer10
       }
     });
   },
@@ -159,6 +171,15 @@ describe('short url with only url set', function() {
     expect(result.headers.location).toBe(successUrl);
   });
 
+  it('redirects to "' + successUrl + '" on IE10', function() {
+    var url = shortUrl.createShortUrl(successUrl);
+
+    var result = Test.getIE10(url);
+
+    expect(result.statusCode).toBe(302);
+    expect(result.headers.location).toBe(successUrl);
+  });
+
   it('redirects to "' + successUrl + '" on ios', function() {
     var url = shortUrl.createShortUrl(successUrl);
 
@@ -199,6 +220,17 @@ describe('short url with iosUrl set', function() {
     expect(result.headers.location).toBe(successUrl);
   });
 
+  it('redirects to "' + successUrl + '" on IE10', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      iosUrl: iosIntent
+    });
+
+    var result = Test.getIE10(url);
+
+    expect(result.statusCode).toBe(302);
+    expect(result.headers.location).toBe(successUrl);
+  });
+
   it('redirects via template on ios', function() {
     var url = shortUrl.createShortUrl(successUrl, {
       iosUrl: iosIntent
@@ -220,7 +252,6 @@ describe('short url with iosUrl set', function() {
     expect(result.statusCode).toBe(302);
     expect(result.headers.location).toBe(successUrl);
   });
-
 });
 
 // Setting androidUrl only
@@ -239,6 +270,17 @@ describe('short url with androidUrl set', function() {
     });
 
     var result = Test.get(url);
+
+    expect(result.statusCode).toBe(302);
+    expect(result.headers.location).toBe(successUrl);
+  });
+
+  it('redirects to "' + successUrl + '" on IE10', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      androidUrl: androidIntent
+    });
+
+    var result = Test.getIE10(url);
 
     expect(result.statusCode).toBe(302);
     expect(result.headers.location).toBe(successUrl);
@@ -289,6 +331,18 @@ describe('short url with androidUrl and iosUrl set', function() {
     expect(result.headers.location).toBe(successUrl);
   });
 
+  it('redirects to "' + successUrl + '" on IE10', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      androidUrl: androidIntent,
+      iosUrl: iosIntent
+    });
+
+    var result = Test.getIE10(url);
+
+    expect(result.statusCode).toBe(302);
+    expect(result.headers.location).toBe(successUrl);
+  });
+
   it('redirects via template on ios', function() {
     var url = shortUrl.createShortUrl(successUrl, {
       androidUrl: androidIntent,
@@ -305,6 +359,69 @@ describe('short url with androidUrl and iosUrl set', function() {
     var url = shortUrl.createShortUrl(successUrl, {
       androidUrl: androidIntent,
       iosUrl: iosIntent
+    });
+
+    var result = Test.getAndroid(url);
+
+    // Got the template served
+    expect(result.statusCode).toBe(200);
+  });
+
+});
+
+// Setting androidUrl, iosUrl and ieUrl
+describe('short url with androidUrl, iosUrl and ieUrl set', function() {
+  beforeEach(function() {
+    if (shortUrl) {
+      // Reset short links
+      shortUrl.shortLinks.remove({});
+    }
+  });
+
+  it('redirects to "' + successUrl + '" on browser', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      androidUrl: androidIntent,
+      iosUrl: iosIntent,
+      ieUrl: ieUrl
+    });
+
+    var result = Test.get(url);
+
+    expect(result.statusCode).toBe(302);
+    expect(result.headers.location).toBe(successUrl);
+  });
+
+  it('redirects to "' + ieUrl + '" on IE10', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      androidUrl: androidIntent,
+      iosUrl: iosIntent,
+      ieUrl: ieUrl
+    });
+
+    var result = Test.getIE10(url);
+
+    expect(result.statusCode).toBe(302);
+    expect(result.headers.location).toBe(ieUrl);
+  });
+
+  it('redirects via template on ios', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      androidUrl: androidIntent,
+      iosUrl: iosIntent,
+      ieUrl: ieUrl
+    });
+
+    var result = Test.getIOS(url);
+
+    // Got the template served
+    expect(result.statusCode).toBe(200);
+  });
+
+  it('redirects via template on android', function() {
+    var url = shortUrl.createShortUrl(successUrl, {
+      androidUrl: androidIntent,
+      iosUrl: iosIntent,
+      ieUrl: ieUrl
     });
 
     var result = Test.getAndroid(url);

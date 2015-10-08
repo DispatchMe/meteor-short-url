@@ -1,0 +1,13 @@
+machine:
+  node:
+    version: 0.10.40
+
+install:
+  - curl https://install.meteor.com/ | sh
+  - export PATH=$PATH:$HOME/.meteor
+  - npm install -g eslint
+  - npm install -g velocity-cli
+
+script:
+  - eslint .
+  - velocity test-package ./ --ci
