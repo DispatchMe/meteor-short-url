@@ -6,16 +6,20 @@ Create short urls, supports android and ios intents / custom-url shemes.
 
 #### Usage examples
 ```js
-  // Setup a url shortner
-  shortUrl = new UrlShortner({
-    prefix: '/s'     // If the shortner is to co-exist with
+  // Setup a url shortener
+  shortUrl = new UrlShortener({
+    prefix: '/s'     // If the shortener is to co-exist with
                      // the application then prefix, default is /s/XXXXXXXX
     // rateLimit: {  // Set rate limit options on the http point
     //   totalRequests: 10,
     //   every: 60000
     // },
     // collectionName: '', // Overwrite the default collection for short urls
-    fallbackUrl: 'https://go.to.here.if.the.short.url.is.not.found',
+    //
+    // fallBack URL can either be a string or a function, for dynamic fallbacks
+    fallbackUrl: function(request) {
+      return 'http://other/shortener/service/' + request.url;
+    },
     // debug: true // Make it verbose,
     // payload: { foo: bar } // Abillity to add payload for events
     startServer: true // Start the http(s) restpoint, default is false
@@ -55,8 +59,8 @@ Create short urls, supports android and ios intents / custom-url shemes.
     appId: 'me.dispatch.qa.test.deep.link'
   });
 
-  // Setup a url shortner
-  shortUrl = new UrlShortner({
+  // Setup a url shortener
+  shortUrl = new UrlShortener({
     prefix: '/s',
     fallbackUrl: 'https://go.to.here.if.the.redirect.fails', // In case the url is not found
   });

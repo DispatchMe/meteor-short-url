@@ -17,11 +17,13 @@ var ieUrl = 'http://internet.explorer.url';
 var androidIntentWithFallback = 'intent://platform=android;S.browser_fallback_url=' + androidFallbackUrl + ';end';
 
 Meteor.startup(function() {
-  shortUrl = new UrlShortner({
+  shortUrl = new UrlShortener({
     prefix: '/test',
     startServer: true,
     collectionName: 'dispatch_short_url_test_mode',
-    fallbackUrl: 'http://google.com',
+    fallbackUrl: function(url) {
+      return 'http://google.com';
+    },
     // Unblock the rate limit
     rateLimit: {
       totalRequests: 10,
@@ -72,9 +74,9 @@ var Test = {
 
 // Create test methods for the client to call
 
-describe('regular expression "shortUrlPattern"', function () {
+describe('regular expression "shortUrlPattern"', function() {
 
-  it('test', function () {
+  it('test', function() {
     // Valid
     expect(shortUrlPattern.test('/12345678901234567')).toBe(true);
     expect(shortUrlPattern.test('/azAZ09')).toBe(true);
@@ -94,25 +96,25 @@ describe('regular expression "shortUrlPattern"', function () {
     expect('/id'.match(shortUrlPattern).slice()).toEqual(['/id', 'id']);
 
     expect('/12345678901234567'.match(shortUrlPattern).slice())
-    .toEqual(['/12345678901234567', '12345678901234567']);
+      .toEqual(['/12345678901234567', '12345678901234567']);
 
     expect('/azAZ09'.match(shortUrlPattern).slice())
-    .toEqual(['/azAZ09', 'azAZ09']);
+      .toEqual(['/azAZ09', 'azAZ09']);
 
     expect('/12345678901234567?foo=bar'.match(shortUrlPattern).slice())
-    .toEqual(['/12345678901234567', '12345678901234567']);
+      .toEqual(['/12345678901234567', '12345678901234567']);
 
     expect('/azAZ09='.match(shortUrlPattern).slice())
-    .toEqual(['/azAZ09', 'azAZ09']);
+      .toEqual(['/azAZ09', 'azAZ09']);
 
     expect('/azAZ09,.-+='.match(shortUrlPattern).slice())
-    .toEqual(['/azAZ09', 'azAZ09']);
+      .toEqual(['/azAZ09', 'azAZ09']);
   });
 });
 
-describe('regular expression "isHttp"', function () {
+describe('regular expression "isHttp"', function() {
 
-  it('test', function () {
+  it('test', function() {
     // Valid
     expect(isHttp.test('http://')).toBe(true);
     expect(isHttp.test('https://')).toBe(true);
@@ -125,9 +127,9 @@ describe('regular expression "isHttp"', function () {
 
 });
 
-describe('regular expression "isAndroidIntentWithCallback"', function () {
+describe('regular expression "isAndroidIntentWithCallback"', function() {
 
-  it('test', function () {
+  it('test', function() {
     // Valid
     expect(isAndroidIntentWithCallback.test('intent://S.browser_fallback_url')).toBe(true);
     expect(isAndroidIntentWithCallback.test('intent://foo;S.browser_fallback_url')).toBe(true);
@@ -200,7 +202,7 @@ describe('short url with only url set', function() {
 
 });
 
-  // Setting iosUrl only
+// Setting iosUrl only
 describe('short url with iosUrl set', function() {
   beforeEach(function() {
     if (shortUrl) {
