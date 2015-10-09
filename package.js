@@ -42,6 +42,10 @@ Package.onUse(function(api) {
 });
 
 Package.onTest(function(api) {
+  // xxx: limitation in velocity - jasmine have to be included on both
+  // client and server - in this case we dont have any client-side tests
+  api.use('sanjo:jasmine@0.20.2', 'client');
+
   api.use([
     'sanjo:jasmine@0.20.2',
     'ecmascript',

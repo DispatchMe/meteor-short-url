@@ -10,4 +10,4 @@ install:
 
 script:
   - eslint .
-  - velocity test-package ./ --ci
+  - velocity test-package --ci ./
