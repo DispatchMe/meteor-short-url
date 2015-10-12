@@ -1,6 +1,6 @@
 Package.describe({
   name: 'dispatch:short-url',
-  version: '1.0.3',
+  version: '1.0.4',
   summary: 'Handle short urls, android and ios support'
 });
 
