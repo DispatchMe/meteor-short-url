@@ -26,12 +26,12 @@ Create short urls, supports android and ios intents / custom-url shemes.
   });
 
   // Create a short url
-  shortUrl = createShortUrl('https://this.is.a.long.url.please.shorten.me');
+  url = shortUrl.createShortUrl('https://this.is.a.long.url.please.shorten.me');
 
   // Create a short url for android and iOS
   // Note: Provide the android fallback url in the intent for the best
   // user experience
-  shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
+  url = shortUrl.createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
     androidUrl: 'intent://?platform=android#Intent;scheme=dispatchdeeplinktest;'+
               'package=me.dispatch.qa.test.deep.link;' +
               'S.browser_fallback_url=http://www.google.com;end',
@@ -39,13 +39,13 @@ Create short urls, supports android and ios intents / custom-url shemes.
   });
 
   // Limit usage
-  shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
-    oneTimeLink=true // Set true and this link will only work once
+  url = shortUrl.createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
+    oneTimeLink:true // Set true and this link will only work once
   });
 
   // or... have it expire
-  shortUrl = createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
-    expireAt=new Date(new Date().getTime() + 10000) // Set expiration time/date
+  url = shortUrl.createShortUrl('https://if.this.is.a.long.url.then.shorten.me', {
+    expireAt:new Date(new Date().getTime() + 10000) // Set expiration time/date
   });
 ```
 
@@ -84,8 +84,19 @@ Create short urls, supports android and ios intents / custom-url shemes.
   });
 ```
 
+#### Manually cleanup expired
+You can call `cleanExpiredFromDatabase` to remove all expired links.
+*If the user tries using an expired link it will be removed in terms of `usage`.*
+
+```js
+  // var shortUrl = createShortUrl(....)
+  // call cleanExpiredFromDatabase at intervals or by service
+  shortUrl.cleanExpiredFromDatabase();
+```
+
 #### Events emitted
 The `urlShortner` will emit the following event:
 * `this.emit('redirect', event);` *(redirect or by html template)*
 * `this.emit('expired', event);` *(By date or usage)*
 * `this.emit('error', event);`
+* `this.emit('cleanup');` *When `cleanExpiredFromDatabase` is done cleaning expired data from the database*

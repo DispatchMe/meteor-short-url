@@ -17,7 +17,7 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  shortUrl = new UrlShortner({
+  shortUrl = new UrlShortener({
     prefix: '/s',
     debug: true,
     htmlBody: 'Redirecting...',
